@@ -1,10 +1,10 @@
-#DIRETRIZES PARA CRIACAO DO SITE LINEUP
+### DIRETRIZES PARA CRIACAO DO SITE LINEUP
 
  - INSTALAR GIT NO COMPUTADOR
  - ENTRAR NO PYCHARM E INICIAR NOVO PROJETO CONSIDERANDO O AMBIENTE VIRTUAL VENV
  - CRIAR UM ARQUIVO README.MD
 
-# INICIAR GIT PARA CONTROLE DE VERSÃO (terminal windows)
+## INICIAR GIT PARA CONTROLE DE VERSÃO (terminal windows)
 git init
 git add README.md
 git commit -m "Meu primeiro Commit para criação do site LineUP "
@@ -12,3 +12,373 @@ git branch -M main
 git remote remove origin
 git remote add origin https://github.com/Gustavomendss/LINEUP_WB.git
 git push -u origin main
+-  Para verificar as mudanças usar o  "git status"
+
+## Instalando o FrameWork Django
+pip install django
+
+# RESUMO DO FRAMEWORK DJANGO
+  A sub-pasta do projeto locallibrary será a raíz para nosso site:
+
+    __init__.py é um arquivo em branco que instrui o Python a tratar esse diretório como um pacote Python.
+    settings.py contém todas as definições do website. É onde nós registramos qualquer aplicação que criarmos, a localização de nossos arquivos estáticos, configurações de banco de dados etc.
+    urls.py define os mapeamentos de URL para visualização do site. Mesmo que esse arquivo possa conter todo o código para mapeamento de URL, é mais comum delegar apenas o mapeamento para aplicativos específicos, como será visto mais adiante.
+    wsgi.py é usado para ajudar na comunicação entre seu aplicativo Django e o web server. Você pode tratar isso como um boilerplate.
+    O script manage.py é usado para criar aplicações, trabalhar com bancos de dados, e iniciar o webserver de desenvolvimento.
+
+
+## Qual é a diferença entre um projeto e um aplicativo?
+    Um aplicativo é um aplicativo da Web que faz algo - por exemplo:
+    um sistema de weblog, um banco de dados de registros públicos ou um pequeno aplicativo de pesquisa.
+    Um projeto é uma coleção de configurações e aplicativos para um site específico.
+    Um projeto pode conter vários aplicativos e um aplicativo pode estar em vários projetos
+    Assim que estivermos prontos com o projeto LINEUP_WEB, precisamos ter um aplicativo central que faça todas as coisas
+    necessárias para nosso aplicativo funcionar. Então, vamos criar um aplicativo central no aplicativo LINEUP.
+
+
+## Iniciando o projeto DJANGO (terminal console)
+django-admin startproject LINEUP_WEB
+cd LINEUP_WEB                   #INDO ATÉ A PASTA RAIZ (terminal console)
+
+## Iniciando um aplicativo DJANGO (terminal console)
+ python manage.py startapp core
+
+## CRIANDO UM ARQUIVO PARA GRAVAR AS ALTERACOES
+    PASSO 1 : ABRIR TERMINAL E DIGITAR :
+    python manage.py makemigrations       # Cria os arquivos de migração 
+    python manage.py migrate              # Cria as tabelas no db
+
+ # A ESTUTURA FICARÁ ASSIM 
+    
+    ├───Core                        # Core App
+    │   │   admin.py
+    │   │   apps.py
+    │   │   models.py
+    │   │   tests.py
+    │   │   views.py
+    │   │   __init__.py
+    │   ├───migrations
+    ├───static                     
+    │   ├───css
+    │   └───js
+    ├───templates                  # Templates para reder dos dados data
+    │       base.html
+    └───TodoList                   # aplicativo padrao criado pelo django
+        │   asgi.py
+        │   settings.py
+        │   urls.py
+        │   wsgi.py
+        │   __init__.py
+        └───__pycache__
+
+## CONFIGURACAO DO SETTINGS.PY
+
+    Passo 1 : IR ATE O CAMINHO ~\LINEUP_PROJECT\LINEUP_WEB\LINEUP_WEB\SETTINGS.PY
+    Passo 2 : IMPORTAR "os" e MODIFICAR O  'INSTALLED_APPS E ADICIONAR  O TEXTO 'core'
+    PASSO 3 : PARA CORRETO DIRECIONAMENTO DOS TEMPLATES E ARQUIVOS CONSIDERAR CODIGO
+            'DIRS': [os.path.join(BASE_DIR, 'templates')],
+    Passo 3 : ALTERAR SECCAO  LANGUADE_CODE PARA 'pt-br' e TIME_ZONE PARA 'AMERICA/Sao_paulo'
+    Passo 4 : ADICIONAR O CAMINHO PARA ARQUIVOS ESTÁTICOS A SEREM UTILIZADOS NO CSS
+        STATIC_URL = '/static/'
+        STATIC_root = os.path.join(BASE_DIR, 'staticfiles')
+            #QUE É A MESMA COISA QUE C:\Users\GUSTAVO\PycharmProjects\LINEUP_PROJECT\LINEUP_WEB\staticfiles
+        MEDIA_URL = 'media/'
+        MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+            #QUE É A MESMA COISA QUE C:\Users\GUSTAVO\PycharmProjects\LINEUP_PROJECT\LINEUP_WEB\media
+        # PARA VERIFICAR ONDE ESTÁ LOCALIZADO O BASE_DIR digitar NO FIM DA PÁGINA DO SETTING.PY:
+        print ("base dir path", BASE_DIR)
+        # PARA REDIRECIONAR PARA A HOMEPAGE APOS A EFETIVACAO DO LOGIN  (POR Default REDIRECIONA PARA /accounts/profile/)
+        LOGIN_REDIRECT_URL = '/'
+    Passo 5 : FECHAR ARQUIVO SETTINGS.PY
+    # PARA VERIFICAR O BASE DIR DIGITAR NO CONSOLE "RUNSERVER"
+
+## CONFIGURACAO DO MODELS.PY (core)
+    Passo 1 : IR ATE O CAMINHO ~\LINEUP_PROJECT\LINEUP_WEB\core\models.py
+    Passo 2 : CRIANDO CLASSES ABSTRATAS:
+        from django.db import models
+        # CRIANDO O  MODELO PARA O LINEUP
+
+        class Base(models.Model):
+            criacao = models.DateTimeField(auto_created=True)
+            atualizacao = models.DateTimeField(auto_now=True)
+            ativo = models.BooleanField(default=True)
+
+            class Meta:
+                abstract = True
+
+        class Lineupapp(Base):
+            título = models.CharField(max_length=255)
+            url = models.URLField(unique=True)
+
+
+            class Meta:
+                verbose_name = 'LineUP'
+                verbose_name_plural = 'LineUP'
+
+
+            def __str__(self):
+                return self.título
+
+        # Criando a parte de avaliacao
+        class Avaliacao(Base):
+            lineup = models.ForeignKey(Lineupapp,
+                                       related_name='avaliacoes',
+                                       on_delete=models.CASCADE)
+            nome = models.CharField(max_length=255)
+            email = models.EmailField()
+            comentario = models.TextField(blank=True, default='')
+            avaliacao = models.DecimalField(max_digits=2, decimal_places=1)
+
+            class Meta:
+                verbose_name = 'Avaliação'
+                verbose_name_plural = 'Avaliações'
+                unique_together = ['email','lineup']
+
+                def __str__(self):
+                    return f'{self.nome} avaliou o lineup {self.lineup} com a nota {self.avaliacao}'
+
+        class todo(models.Model):
+            name = models.TextField(max_length=255)
+            status = models.BooleanField(default=False)
+
+## CRIANDO UM SUPERUSUÁRIO PARA ADICIONAR O MODELO NA PAGINA DE ADMINISTRAÇÃO
+python manage.py createsuperuser
+
+- usuario : admin
+- email   : admin@admin.com
+- senha   : admin
+
+    Passo 1 : IR ATE O CAMINHO ~\LINEUP_PROJECT\LINEUP_WEB\core\admin.py
+    Passo 2 : Digitar:
+    
+    from .models import Lineupapp, Avaliacao
+    from django.contrib import admin
+    from .models import todo
+    
+    @admin.register(Lineupapp)
+    class LineupAdmin(admin.ModelAdmin):
+        list_display = ('título','url', 'criacao', 'atualizacao','ativo')
+    
+    @admin.register(Avaliacao)
+    class AvaliacaoAdmin(admin.ModelAdmin):
+        list_display = ('lineup','nome', 'email', 'avaliacao', 'criacao', 'atualizacao', 'ativo')
+    
+    admin.site.register(todo)
+
+##  GRAVAR AS ALTERACOES 
+    PASSO 1 : ABRIR TERMINAL E DIGITAR :
+    python manage.py makemigrations       # Cria os arquivos de migração 
+    python manage.py migrate              # Cria as tabelas no db
+
+
+
+## Alterando a view do site para navegação do url
+    A ideia é que o usuário seja capaz de ver as tarefas a serem realizas,
+    adicionar novas tarefas e eliminar as tarefas já concluídas .
+    Para essas três operações, temos três visualizações diferentes em nosso aplicativo LineUP. 
+    - O primeiro é o índice, que renderiza todas as tarefas desfeitas. (index)
+    - A Segunda visão é a new_to_do, que  permite ao usuário adicionar um novo à lista
+    - A terceira visão é a mark_as_done que permite o usuário concluír a tarefa. 
+    
+    A ideia de ter um campo booleano no modelo para todo é simples. 
+    Suponha a criação de um campo booleano e considere uma tarefa como "concluída",
+    se o status da tarefa for igual a  verdadeiro (1). E por padrão, o status da tarefa é falso (0). 
+    Portanto, para as visualizações do índice e new_to_do, podemos filtrar os objetos com base no status e,
+    em seguida renderizar no modelo. 
+    Assim, o usuário  terá apenas a lista de tarefas pendentes que não foram realizadas. 
+    
+    Chegando à visão mark_as_done, enviamos o id da tarefa que é feita a partir do template/base.html e então
+    recuperamos o objeto e tornamos o campo de status da tarefa True.
+
+
+# ALTERANDO A VIEW
+    Passo 1 : IR ATE O CAMINHO ~\LINEUP_PROJECT\LINEUP_WEB\core\views.py
+    Passo 2 : CRIANDO CLASSES ABSTRATAS:
+        
+        
+        from django.shortcuts import render
+        from django.http import HttpResponse
+        
+        from .models import todo
+        
+        def home_view(request,*args, **kwargs):
+            return HttpResponse("<h1>Hello World</h1>")
+        
+        def index(request):
+            list_todo = todo.objects.filter(status=False)
+            return render(request, 'base.html', {'list_todo': list_todo})
+        
+        
+        def mark_as_done(request, id):
+            obj = todo.objects.get(pk=id)
+            obj.status = True
+            obj.save()
+            list_todo = todo.objects.filter(status=False)
+            return render(request, 'base.html', {'list_todo': list_todo})
+        
+        def new_todo(request):
+            if request.method == "POST":
+                todo.objects.create(name=request.POST.get('todo-name'))
+                list_todo = todo.objects.filter(status=False)
+                return render(request, 'base.html', {'list_todo': list_todo})
+        
+        '''
+        from django.http import HttpResponse
+        def index(request):
+            return HttpResponse("Hello World!")
+
+        '''
+
+
+## CRIANDO A VISÃO DO TEMPLATE 
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>
+
+        {% block title %}
+            LineUp Application
+        {% endblock %}
+
+
+    </title>
+    <link rel="shortcut icon" href="https://img.icons8.com/nolan/64/tasklist.png"/>
+    <link rel="shortcut icon" href="LINEUPAPP/static/media/tasklist.png"/>
+    <link rel="icon" type="image/png" href="static/media/lineup_fav.png">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+  </head>
+  <body>
+    <div class="container">
+      <div class="container">
+        <p>
+        </p>
+      </div>
+    </div>
+    <div class="col-sm-7">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="panel panel-default text-left">
+              <div class="panel-body">
+                <h4 contenteditable="true">Olá bem-vindo ao LineUp ! <br>
+                    Liste aqui todas as suas tarefas e matenha a organização. &#9200; &#128079
+                    </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h2>
+          Lista de Tarefas
+        </h2>
+
+        <div class="row">
+          <div class="col-sm-9">
+          {% for todo in list_todo %}
+            {% if not todo.status %}
+                <div class="well">
+                  <h4>{{ todo.name }}</h4>
+                  <a href="{% url 'mark_as_done' todo.id  %}">Marcar como realizado   &#9989;</a>
+                </div>
+            {% endif %}
+          {% endfor %}
+          </div>
+        </div>
+
+        <h2>
+          Criar nova tarefa
+        </h2>
+      </div>
+
+        <div class="col-sm-9">
+          <div class="well">
+            <form method="POST" action="{% url 'new_todo' %}" id="input-text" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="textarea" style="width: 450px;" name="todo-name">
+              <button type="submit" value="Submit" class="btn btn-primary">Criar uma nova tarefa </button>
+            </form>
+          </div>
+        </div>
+
+
+    <div class="row">
+      <button onclick="myFunction()">Realizar Logout!</button>
+    </div>
+
+
+  </div>
+  </div>
+</div>
+</body>
+
+<style>
+
+body {
+  background-color: #EEEEEE;
+  color: black;
+}
+.dark-mode {
+  background-color: black;
+  color: black;
+}
+</style>
+
+<script>
+  function myFunction() {
+  var element = document.body;
+  element.classList.toggle("dark-mode");
+  }
+</script>
+</html>
+
+## O ARQUIVO HTML POSSUI ALGUNS DETALHES IMPORTANTES
+    Temos dois lugares importantes nas linhas 35–50, em que  a lista de tarefas desfeitas é exibida 
+    e cada tarefa tem um id, que é usado para tornar a tarefa lida.
+    Na linha 44, enviamos o id da tarefa enviado junto com a url e na visualização a tarefa é marcada como lida. 
+    E nas linhas 51 a 64 temos outro local importante, onde uma solicitação de postagem é feita e enviada. 
+    A linha 58-62 cobre este aspecto do envio de dados usando os formulários e a solicitação é tratada pela
+    visão de new_todo. Esqueci de mencionar que um botão para o modo escuro também foi habilitado e, ao clicar
+    no botão, cada elemento que for branco ficará escuro e vice-versa.
+
+
+## Alterando a url do site para redirecionamento correto da midia e links 
+    Passo 1 : IR ATE O CAMINHO ~\LINEUP_PROJECT\LINEUP_WEB\LINEUP_WEB\urls.py
+    Passo 2 : digitar:
+      from django.contrib import admin
+      from django.urls import include, path
+      from core import views
+      from django.conf import settings
+      from django.conf.urls.static import static
+      from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+      
+      urlpatterns = [
+          path('admin/', admin.site.urls),
+          path('', views.index, name='index'),
+          path('new-todo', views.new_todo, name="new_todo"),
+          path('mark-as-done/<int:id>', views.mark_as_done, name="mark_as_done"),
+      
+      ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+      
+      urlpatterns += staticfiles_urlpatterns()
+
+## RODANDO O APLICATIVO 
+python manage.py runserver
+
+# upload no git
+git add -all
+git commit -m " LineUP  - analise"
+git push -u origin main
+
+## Fontes
+
+https://icons8.com/icons/set/task-list
+https://pythonacademy.com.br/blog/o-comando-makemigrations-do-django
+https://python.plainenglish.io/how-to-make-a-simple-to-do-app-in-python-django-ead5b35b9d98
+https://developer.mozilla.org/pt-BR/docs/Learn/Server-side/Django/skeleton_website
+https://www.mytecbits.com/internet/python/addding-image-django-web-app
+https://tutorial.djangogirls.org/pt/django_start_project/
