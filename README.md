@@ -1,10 +1,11 @@
-### DIRETRIZES PARA CRIACAO DO SITE LINEUP
+### DIRETRIZES PARA CRIAÇÃO DO SITE LINEUP
 
  - INSTALAR GIT NO COMPUTADOR
  - ENTRAR NO PYCHARM E INICIAR NOVO PROJETO CONSIDERANDO O AMBIENTE VIRTUAL VENV
  - CRIAR UM ARQUIVO README.MD
 
 ## INICIAR GIT PARA CONTROLE DE VERSÃO (terminal windows)
+```
 git init
 git add README.md
 git commit -m "Meu primeiro Commit para criação do site LineUP "
@@ -13,8 +14,9 @@ git remote remove origin
 git remote add origin https://github.com/Gustavomendss/LINEUP_WB.git
 git push -u origin main
 -  Para verificar as mudanças usar o  "git status"
+```
 
-## Instalando o FrameWork Django
+### Instalando o FrameWork Django
 pip install django
 
 # RESUMO DO FRAMEWORK DJANGO
@@ -27,7 +29,7 @@ pip install django
     O script manage.py é usado para criar aplicações, trabalhar com bancos de dados, e iniciar o webserver de desenvolvimento.
 
 
-## Qual é a diferença entre um projeto e um aplicativo?
+# Qual é a diferença entre um projeto e um aplicativo?
     Um aplicativo é um aplicativo da Web que faz algo - por exemplo:
     um sistema de weblog, um banco de dados de registros públicos ou um pequeno aplicativo de pesquisa.
     Um projeto é uma coleção de configurações e aplicativos para um site específico.
@@ -36,66 +38,70 @@ pip install django
     necessárias para nosso aplicativo funcionar. Então, vamos criar um aplicativo central no aplicativo LINEUP.
 
 
-## Iniciando o projeto DJANGO (terminal console)
+### Iniciando o projeto DJANGO (terminal console)
+```
 django-admin startproject LINEUP_WEB
 cd LINEUP_WEB                   #INDO ATÉ A PASTA RAIZ (terminal console)
-
-## Iniciando um aplicativo DJANGO (terminal console)
- python manage.py startapp core
-
+```
+### Iniciando um aplicativo DJANGO (terminal console)
+``` 
+python manage.py startapp core
+```
 ## CRIANDO UM ARQUIVO PARA GRAVAR AS ALTERACOES
-    PASSO 1 : ABRIR TERMINAL E DIGITAR :
+    1. ABRIR TERMINAL E DIGITAR :
+```
     python manage.py makemigrations       # Cria os arquivos de migração 
     python manage.py migrate              # Cria as tabelas no db
-
+```
  # A ESTUTURA FICARÁ ASSIM 
-    
-    ├───Core                        # Core App
+```
+    ├───core                        # Core App
     │   │   admin.py
     │   │   apps.py
     │   │   models.py
     │   │   tests.py
     │   │   views.py
     │   │   __init__.py
-    │   ├───migrations
-    ├───static                     
-    │   ├───css
-    │   └───js
-    ├───templates                  # Templates para reder dos dados data
-    │       base.html
-    └───TodoList                   # aplicativo padrao criado pelo django
+    │   └───migrations 
+    ├───templates                     # Templates para render dos dados data
+    │    └───base.html
+    └─── LINEUP_WEB                   # aplicativo padrao criado pelo django
         │   asgi.py
         │   settings.py
         │   urls.py
         │   wsgi.py
         │   __init__.py
         └───__pycache__
+```
 
 ## CONFIGURACAO DO SETTINGS.PY
 
-    Passo 1 : IR ATE O CAMINHO ~\LINEUP_PROJECT\LINEUP_WEB\LINEUP_WEB\SETTINGS.PY
-    Passo 2 : IMPORTAR "os" e MODIFICAR O  'INSTALLED_APPS E ADICIONAR  O TEXTO 'core'
-    PASSO 3 : PARA CORRETO DIRECIONAMENTO DOS TEMPLATES E ARQUIVOS CONSIDERAR CODIGO
-            'DIRS': [os.path.join(BASE_DIR, 'templates')],
-    Passo 3 : ALTERAR SECCAO  LANGUADE_CODE PARA 'pt-br' e TIME_ZONE PARA 'AMERICA/Sao_paulo'
-    Passo 4 : ADICIONAR O CAMINHO PARA ARQUIVOS ESTÁTICOS A SEREM UTILIZADOS NO CSS
-        STATIC_URL = '/static/'
-        STATIC_root = os.path.join(BASE_DIR, 'staticfiles')
-            #QUE É A MESMA COISA QUE C:\Users\GUSTAVO\PycharmProjects\LINEUP_PROJECT\LINEUP_WEB\staticfiles
-        MEDIA_URL = 'media/'
-        MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-            #QUE É A MESMA COISA QUE C:\Users\GUSTAVO\PycharmProjects\LINEUP_PROJECT\LINEUP_WEB\media
-        # PARA VERIFICAR ONDE ESTÁ LOCALIZADO O BASE_DIR digitar NO FIM DA PÁGINA DO SETTING.PY:
-        print ("base dir path", BASE_DIR)
-        # PARA REDIRECIONAR PARA A HOMEPAGE APOS A EFETIVACAO DO LOGIN  (POR Default REDIRECIONA PARA /accounts/profile/)
-        LOGIN_REDIRECT_URL = '/'
-    Passo 5 : FECHAR ARQUIVO SETTINGS.PY
-    # PARA VERIFICAR O BASE DIR DIGITAR NO CONSOLE "RUNSERVER"
+    1. IR ATE O CAMINHO ~\LINEUP_PROJECT\LINEUP_WEB\LINEUP_WEB\SETTINGS.PY
+    2. IMPORTAR "os" e MODIFICAR O  'INSTALLED_APPS E ADICIONAR  O TEXTO 'core'
+    3. PARA CORRETO DIRECIONAMENTO DOS TEMPLATES E ARQUIVOS CONSIDERAR CODIGO
+```
+      'DIRS': [os.path.join(BASE_DIR, 'templates')],
+```
+    3. ALTERAR SECCAO  LANGUADE_CODE PARA 'pt-br' e TIME_ZONE PARA 'AMERICA/Sao_paulo'
+    4. ADICIONAR O CAMINHO PARA ARQUIVOS ESTÁTICOS A SEREM UTILIZADOS NO CSS
+```
+         STATIC_URL = '/static/'
+        STATICFILES_DIRS = [
+            os.path.join(BASE_DIR, "static"),
+            #'/var/www/static/',
+        ]
+        STATIC_ROOT = os.path.join(BASE_DIR, 'static_cdn') # CDN REFERE SE A CONTENT DELIVERY NETWORK
+        MEDIA_ROOT = os.path.join(BASE_DIR, 'media_cdn')
+        # QUE É A MESMA COISA QUE C:\Users\GUSTAVO\PycharmProjects\LINEUP_PROJECT\LINEUP_WEB\media_cnd
+```
+    5. FECHAR ARQUIVO SETTINGS.PY
+      - PARA VERIFICAR O BASE DIR DIGITAR NO CONSOLE "RUNSERVER"
 
 ## CONFIGURACAO DO MODELS.PY (core)
-    Passo 1 : IR ATE O CAMINHO ~\LINEUP_PROJECT\LINEUP_WEB\core\models.py
-    Passo 2 : CRIANDO CLASSES ABSTRATAS:
-        from django.db import models
+    1. IR ATE O CAMINHO ~\LINEUP_PROJECT\LINEUP_WEB\core\models.py
+    2. CRIANDO CLASSES ABSTRATAS:
+``` 
+       from django.db import models
         # CRIANDO O  MODELO PARA O LINEUP
 
         class Base(models.Model):
@@ -140,6 +146,7 @@ cd LINEUP_WEB                   #INDO ATÉ A PASTA RAIZ (terminal console)
         class todo(models.Model):
             name = models.TextField(max_length=255)
             status = models.BooleanField(default=False)
+```
 
 ## CRIANDO UM SUPERUSUÁRIO PARA ADICIONAR O MODELO NA PAGINA DE ADMINISTRAÇÃO
 python manage.py createsuperuser
@@ -148,9 +155,9 @@ python manage.py createsuperuser
 - email   : admin@admin.com
 - senha   : admin
 
-    Passo 1 : IR ATE O CAMINHO ~\LINEUP_PROJECT\LINEUP_WEB\core\admin.py
-    Passo 2 : Digitar:
-    
+    1. IR ATE O CAMINHO ~\LINEUP_PROJECT\LINEUP_WEB\core\admin.py
+    2. : Digitar:
+ ```   
     from .models import Lineupapp, Avaliacao
     from django.contrib import admin
     from .models import todo
@@ -164,9 +171,10 @@ python manage.py createsuperuser
         list_display = ('lineup','nome', 'email', 'avaliacao', 'criacao', 'atualizacao', 'ativo')
     
     admin.site.register(todo)
+```
 
 ##  GRAVAR AS ALTERACOES 
-    PASSO 1 : ABRIR TERMINAL E DIGITAR :
+    1. ABRIR TERMINAL E DIGITAR :
     python manage.py makemigrations       # Cria os arquivos de migração 
     python manage.py migrate              # Cria as tabelas no db
 
@@ -191,10 +199,10 @@ python manage.py createsuperuser
     recuperamos o objeto e tornamos o campo de status da tarefa True.
 
 
-# ALTERANDO A VIEW
-    Passo 1 : IR ATE O CAMINHO ~\LINEUP_PROJECT\LINEUP_WEB\core\views.py
-    Passo 2 : CRIANDO CLASSES ABSTRATAS:
-        
+## ALTERANDO A VIEW
+    1. IR ATE O CAMINHO ~\LINEUP_PROJECT\LINEUP_WEB\core\views.py
+    2. CRIANDO CLASSES ABSTRATAS:
+   ```     
         
         from django.shortcuts import render
         from django.http import HttpResponse
@@ -222,22 +230,20 @@ python manage.py createsuperuser
                 list_todo = todo.objects.filter(status=False)
                 return render(request, 'base.html', {'list_todo': list_todo})
         
-        '''
-        from django.http import HttpResponse
-        def index(request):
-            return HttpResponse("Hello World!")
+```
 
-        '''
+# Criar os arquivos da pasta static (css/fonts/img/js) - lista na fonte abaixo
 
 
-## CRIANDO A VISÃO DO TEMPLATE 
-
+## CRIANDO A VISÃO DO TEMPLATE EM HTML (base.html)
+```
 {% load static %}
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
-    <title>
+
+  <title>
 
         {% block title %}
             LineUp Application
@@ -245,14 +251,13 @@ python manage.py createsuperuser
 
 
     </title>
-    <link rel="shortcut icon" href="https://img.icons8.com/nolan/64/tasklist.png"/>
-    <link rel="shortcut icon" href="LINEUPAPP/static/media/tasklist.png"/>
-    <link rel="icon" type="image/png" href="static/media/lineup_fav.png">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
+    <link rel="shortcut icon" href="/static/img/favicon.png"/>
+    <!link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <!link rel="stylesheet" href='/static/css/base.css'/>
   </head>
+
   <body>
     <div class="container">
       <div class="container">
@@ -260,6 +265,13 @@ python manage.py createsuperuser
         </p>
       </div>
     </div>
+    <p>
+
+    {% load static %} <img src="/static/img/home.png" alt="home" style="width:1024px;height:340px />
+
+    </p>
+
+
     <div class="col-sm-7">
         <div class="row">
           <div class="col-sm-12">
@@ -273,7 +285,7 @@ python manage.py createsuperuser
           </div>
         </div>
 
-        <h2>
+            <h2>
           Lista de Tarefas
         </h2>
 
@@ -326,6 +338,24 @@ body {
   background-color: black;
   color: black;
 }
+
+.parent {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+h2 {
+margin: 20px 20px
+
+}
+
+
+
 </style>
 
 <script>
@@ -335,8 +365,9 @@ body {
   }
 </script>
 </html>
+```
 
-## O ARQUIVO HTML POSSUI ALGUNS DETALHES IMPORTANTES
+# O ARQUIVO HTML POSSUI ALGUNS DETALHES IMPORTANTES
     Temos dois lugares importantes nas linhas 35–50, em que  a lista de tarefas desfeitas é exibida 
     e cada tarefa tem um id, que é usado para tornar a tarefa lida.
     Na linha 44, enviamos o id da tarefa enviado junto com a url e na visualização a tarefa é marcada como lida. 
@@ -347,8 +378,9 @@ body {
 
 
 ## Alterando a url do site para redirecionamento correto da midia e links 
-    Passo 1 : IR ATE O CAMINHO ~\LINEUP_PROJECT\LINEUP_WEB\LINEUP_WEB\urls.py
-    Passo 2 : digitar:
+    1. IR ATE O CAMINHO ~\LINEUP_PROJECT\LINEUP_WEB\LINEUP_WEB\urls.py
+    2. DIGITAR :
+```
       from django.contrib import admin
       from django.urls import include, path
       from core import views
@@ -365,20 +397,62 @@ body {
       ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
       
       urlpatterns += staticfiles_urlpatterns()
+```
+#PARA CRIAR O DIRETORIO DE ARQUIVOS LOCAIS PARA PRODUCAO ( IRA CRAR PASTA static_cdn)
+```
+python manage.py collectstatic
+```
 
 ## RODANDO O APLICATIVO 
+```
 python manage.py runserver
+```
+# PARA SAIR APERTAR CTRL+C NO TERMINAL
+
+ # A ESTUTURA FINAL DO PROGRAMA FICARA
+```
+    LINEUP_WEB
+    │
+    ├───core                        # Core App
+    │   │   admin.py
+    │   │   apps.py
+    │   │   models.py
+    │   │   tests.py
+    │   │   views.py
+    │   │   __init__.py
+    │   ├───migrations
+    ├───static                     
+    │   ├───css
+    │   └───fonts
+    │   └───img
+    │   └───js
+    ├───templates                     # Templates para render dos dados data
+    │       base.html
+    └───LINEUP_WEB                   # aplicativo padrao criado pelo django
+        │   asgi.py
+        │   settings.py
+        │   urls.py
+        │   wsgi.py
+        │   __init__.py
+        └───__pycache__
+
+
+```
 
 # upload no git
+```
 git add -all
-git commit -m " LineUP  - analise"
+git commit -m " LineUP  - Finalizado"
 git push -u origin main
+```
 
 ## Fontes
-
-https://icons8.com/icons/set/task-list
 https://pythonacademy.com.br/blog/o-comando-makemigrations-do-django
 https://python.plainenglish.io/how-to-make-a-simple-to-do-app-in-python-django-ead5b35b9d98
 https://developer.mozilla.org/pt-BR/docs/Learn/Server-side/Django/skeleton_website
 https://www.mytecbits.com/internet/python/addding-image-django-web-app
 https://tutorial.djangogirls.org/pt/django_start_project/
+https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css
+https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css
+https://img.icons8.com/nolan/64/tasklist.png
+https://www.youtube.com/watch?v=YH-ipgxlJzs

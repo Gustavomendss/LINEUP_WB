@@ -12,14 +12,13 @@
 
 
     </title>
-    <link rel="shortcut icon" href="https://img.icons8.com/nolan/64/tasklist.png"/>
-    <link rel="shortcut icon" href="LINEUPAPP/static/media/tasklist.png"/>
-    <link rel="icon" type="image/png" href="static/media/lineup_fav.png">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
+    <link rel="shortcut icon" href="/static/img/favicon.png"/>
+    <!link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <!link rel="stylesheet" href='/static/css/base.css'/>
   </head>
+
   <body>
     <div class="container">
       <div class="container">
@@ -27,6 +26,13 @@
         </p>
       </div>
     </div>
+    <p>
+
+    {% load static %} <img src="/static/img/home.png" alt="home" style="width:1024px;height:340px />
+
+    </p>
+
+
     <div class="col-sm-7">
         <div class="row">
           <div class="col-sm-12">
@@ -39,11 +45,6 @@
             </div>
           </div>
         </div>
-<p>
-
-    {% load static %} <img src="{% static "dj_app/media/house.jpg" %}" alt="home" />
-
-</p>
 
             <h2>
           Lista de Tarefas
@@ -104,11 +105,14 @@ body {
   top: 0;
   left: 0;
 }
-.image1 {
-  position: relative;
-  top: 30px;
-  left: 30px;
-  border: 1px green solid;
+
+.text-center {
+  text-align: center;
+}
+
+h2 {
+margin: 20px 20px
+
 }
 
 

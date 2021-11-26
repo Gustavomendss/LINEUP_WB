@@ -41,9 +41,12 @@ urlpatterns = [
     path('new-todo', views.new_todo, name="new_todo"),
     path('mark-as-done/<int:id>', views.mark_as_done, name="mark_as_done"),
 
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
+if settings.DEBUG:
+   urlpatterns += staticfiles_urlpatterns()
+   urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-urlpatterns += staticfiles_urlpatterns()
+
 
 '''
 
