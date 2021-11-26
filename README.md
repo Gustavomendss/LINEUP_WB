@@ -1,3 +1,5 @@
+![img.png](LINEUP_WEB/static/img/img.png)
+
 ### DIRETRIZES PARA CRIAÇÃO DO SITE LINEUP
 
  - INSTALAR GIT NO COMPUTADOR
