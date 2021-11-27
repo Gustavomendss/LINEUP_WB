@@ -1,11 +1,23 @@
+
+
 ![img.png](LINEUP_WEB/static/img/img.png)
+
 
 ### DIRETRIZES PARA CRIAÇÃO DO SITE LINEUP
 
- - INSTALAR GIT NO COMPUTADOR
- - ENTRAR NO PYCHARM E INICIAR NOVO PROJETO CONSIDERANDO O AMBIENTE VIRTUAL VENV
- - CRIAR UM ARQUIVO README.MD
+ 1) INSTALAR GIT NO COMPUTADOR ( CONTROLE DE VERSÃO)
+ 2) ENTRAR NO PYCHARM E INICIAR NOVO PROJETO CONSIDERANDO O AMBIENTE VIRTUAL VENV
+ 3) CRIAR UM ARQUIVO README.MD
+ 4)INICIAR INSTALAÇÃO DO FRAMEWORK DJANGO PARA DESENVOLVIMENTO WEB DO LineUp 
+  
 
+# DIFERENÇAS ENTRE FUNCIONALIDADES DO DJANGO E DESCRIÇÃO DA ESTRUTURA DO SITE LineUp. 
+Consideramos  o LINEUP_PROJECT/LINEUP_WEB como um diretório pai onde será realizado a organização de todos os arquivos.
+O subdiretorio LINEUP_WEB/LINEUP_WEB é o projeto django criado a partir do comando django-admin startproject LINEUP_WEB,
+em que consideramos como pacote do python que abrange todas as configurações da instancia do django e do banco de dados.
+Podemos criar o aplicativo central do site a partir do código "python manage.py startapp core", que incorpora as 
+funcões utilizadas no site, "marcar como realizado" e criar nova tarefa - dentro do arquivo "views.py".
+ 
 ## INICIAR GIT PARA CONTROLE DE VERSÃO (terminal windows)
 ```
 git init
@@ -22,22 +34,12 @@ git push -u origin main
 pip install django
 
 # RESUMO DO FRAMEWORK DJANGO
-  A sub-pasta do projeto locallibrary será a raíz para nosso site:
-
     __init__.py é um arquivo em branco que instrui o Python a tratar esse diretório como um pacote Python.
     settings.py contém todas as definições do website. É onde nós registramos qualquer aplicação que criarmos, a localização de nossos arquivos estáticos, configurações de banco de dados etc.
     urls.py define os mapeamentos de URL para visualização do site. Mesmo que esse arquivo possa conter todo o código para mapeamento de URL, é mais comum delegar apenas o mapeamento para aplicativos específicos, como será visto mais adiante.
     wsgi.py é usado para ajudar na comunicação entre seu aplicativo Django e o web server. Você pode tratar isso como um boilerplate.
     O script manage.py é usado para criar aplicações, trabalhar com bancos de dados, e iniciar o webserver de desenvolvimento.
 
-
-# Qual é a diferença entre um projeto e um aplicativo?
-    Um aplicativo é um aplicativo da Web que faz algo - por exemplo:
-    um sistema de weblog, um banco de dados de registros públicos ou um pequeno aplicativo de pesquisa.
-    Um projeto é uma coleção de configurações e aplicativos para um site específico.
-    Um projeto pode conter vários aplicativos e um aplicativo pode estar em vários projetos
-    Assim que estivermos prontos com o projeto LINEUP_WEB, precisamos ter um aplicativo central que faça todas as coisas
-    necessárias para nosso aplicativo funcionar. Então, vamos criar um aplicativo central no aplicativo LINEUP.
 
 
 ### Iniciando o projeto DJANGO (terminal console)
@@ -55,7 +57,9 @@ python manage.py startapp core
     python manage.py makemigrations       # Cria os arquivos de migração 
     python manage.py migrate              # Cria as tabelas no db
 ```
- # A ESTUTURA FICARÁ ASSIM 
+
+
+# A ESTUTURA FICARÁ ASSIM 
 ```
     ├───core                        # Core App
     │   │   admin.py
@@ -411,40 +415,11 @@ python manage.py runserver
 ```
 # PARA SAIR APERTAR CTRL+C NO TERMINAL
 
- # A ESTUTURA FINAL DO PROGRAMA FICARA
-```
-    LINEUP_WEB
-    │
-    ├───core                        # Core App
-    │   │   admin.py
-    │   │   apps.py
-    │   │   models.py
-    │   │   tests.py
-    │   │   views.py
-    │   │   __init__.py
-    │   ├───migrations
-    ├───static                     
-    │   ├───css
-    │   └───fonts
-    │   └───img
-    │   └───js
-    ├───templates                     # Templates para render dos dados data
-    │       base.html
-    └───LINEUP_WEB                   # aplicativo padrao criado pelo django
-        │   asgi.py
-        │   settings.py
-        │   urls.py
-        │   wsgi.py
-        │   __init__.py
-        └───__pycache__
-
-
-```
 
 # upload no git
 ```
-git add -all
-git commit -m " LineUP  - Finalizado"
+git add .
+git commit -m " LineUP  - Finalizado !"
 git push -u origin main
 ```
 
@@ -458,3 +433,4 @@ https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.c
 https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css
 https://img.icons8.com/nolan/64/tasklist.png
 https://www.youtube.com/watch?v=YH-ipgxlJzs
+https://cssgradient.io/
