@@ -18,6 +18,35 @@ em que consideramos como pacote do python que abrange todas as configurações d
 Podemos criar o aplicativo central do site a partir do código "python manage.py startapp core", que incorpora as 
 funcões utilizadas no site, "marcar como realizado" e criar nova tarefa - dentro do arquivo "views.py".
  
+# A ESTUTURA FINAL DO PROGRAMA FICARÁ
+```
+    LINEUP_WEB
+    │
+    ├───core                        # Core App
+    │   │   admin.py
+    │   │   apps.py
+    │   │   models.py
+    │   │   tests.py
+    │   │   views.py
+    │   │   __init__.py
+    │   ├───migrations
+    ├───static                     
+    │   ├───css
+    │   └───fonts
+    │   └───img
+    │   └───js
+    ├───templates                     # Templates para render dos dados data
+    │       base.html
+    └───LINEUP_WEB                   # aplicativo padrao criado pelo django
+        │   asgi.py
+        │   settings.py
+        │   urls.py
+        │   wsgi.py
+        │   __init__.py
+        └───__pycache__
+
+ 
+ 
 ## INICIAR GIT PARA CONTROLE DE VERSÃO (terminal windows)
 ```
 git init
